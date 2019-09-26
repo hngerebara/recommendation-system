@@ -55,7 +55,7 @@ router.route("/actions")
             return res.json(response);
         } catch (err) {
             log.error(err);
-            return res.status(500).send('Something blew up. We\'re looking into it.');
+            return res.status(500).send('Something went wrong.');
         }
     });
 
@@ -63,41 +63,46 @@ router.route("/recommend")
     .post(async(req,res) => {
         try {
             const slackReqObj = req.body;
-            const response = {
-                response_type: 'in_channel',
-                channel: slackReqObj.channel_id,
-                text: `You are recommending: ${slackReqObj.text}`,
-                attachments: [
-                    {
-                        text: "Please select the best audience",
-                        fallback: "You are unable to choose an audience",
-                        callback_id: "recommendation_audience",
-                        color: "#3AA3E3",
-                        attachment_type: "default",
-                        actions: [
-                            {
-                                name: "beginner",
-                                text: "Beginner",
-                                type: "button",
-                                value: "beginner"
-                            },
-                            {
-                                name: "intermediate",
-                                text: "Intermediate",
-                                type: "button",
-                                value: "intermediate"
-                            },
-                            {
-                                name: "advanced",
-                                text: "Advanced",
-                                type: "button",
-                                value: "advanced"
-                            }
-                        ]
-                    }
-                ]
-            };
-            return res.json(response);
+            if(slackReqObj.text){
+                const response = {
+                    response_type: 'in_channel',
+                    channel: slackReqObj.channel_id,
+                    text: `You are recommending: ${slackReqObj.text}`,
+                    attachments: [
+                        {
+                            text: "Please select the best audience",
+                            fallback: "You are unable to choose an audience",
+                            callback_id: "recommendation_audience",
+                            color: "#3AA3E3",
+                            attachment_type: "default",
+                            actions: [
+                                {
+                                    name: "beginner",
+                                    text: "Beginner",
+                                    type: "button",
+                                    value: "beginner"
+                                },
+                                {
+                                    name: "intermediate",
+                                    text: "Intermediate",
+                                    type: "button",
+                                    value: "intermediate"
+                                },
+                                {
+                                    name: "advanced",
+                                    text: "Advanced",
+                                    type: "button",
+                                    value: "advanced"
+                                }
+                            ]
+                        }
+                    ]
+                };
+                return res.status(200).json(response);
+            } else {
+                return res.send("No recommendations included. Please type /recommend <recommendation>");
+            }
+
         } catch (err) {
             return res.status(500).send('Something went wrong.');
         }
