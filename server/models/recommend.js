@@ -4,7 +4,6 @@ const mongoSchema =   mongoose.Schema;
 
 // create schema
 const recommendationSchema  = {
-    "type": String,
     "location": String,
     "audience": String,
     "dateAdded": Date
