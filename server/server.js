@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-
+const cors = require('cors');
 
 const router = express.Router();
 
@@ -10,6 +10,7 @@ const Recommendation = require('./models/recommend');
 const port = process.env.PORT || 4000;
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -35,26 +36,27 @@ router.route("/recommend")
 
 router.route("/actions")
     .post(async(req, res) => {
+
         const db = new Recommendation();
 
         try {
             const slackReqObj = JSON.parse(req.body.payload);
 
             db.audience = slackReqObj.actions[0].name;
+
             db.location = slackReqObj.original_message.text;
 
             db.save(function(err){
                 if(err) {
                     response = {"error" : true,"message" : "Error adding data"};
                 } else {
-                    response = `Thank you ${slackReqObj.user.name} for your recommendation`;
+                    response = `Thank you :books: :nerd_face: ${slackReqObj.user.name} for your recommendation :tada:`;
                 }
                 res.json(response);
             });
 
             return res.json(response);
         } catch (err) {
-            log.error(err);
             return res.status(500).send('Something went wrong.');
         }
     });
