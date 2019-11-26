@@ -1,14 +1,12 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
-# dependencies
-/client/node_modules
-/server/node_modules
+/node_modules
+/package-lock.json
+
 
 # testing
 /coverage
 
-/client/package-lock.json
-/server/package-lock.json
 
 # misc
 .DS_Store
