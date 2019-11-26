@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 
 const router = express.Router();
 
@@ -13,6 +14,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, "client/build")));
 
 mongoose.connect('mongodb://127.0.0.1:27017/recommendation', { useNewUrlParser: true });
 const connection = mongoose.connection;
