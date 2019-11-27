@@ -1,8 +1,10 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
+# Deployment directories
 /node_modules
 /package-lock.json
+dist
 
+# Optional npm cache directory
+.npm
 
 # testing
 /coverage
